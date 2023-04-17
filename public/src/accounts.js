@@ -12,13 +12,18 @@ let total = 0;
 for (let book in books) {
   const { borrows } = books[book];
   borrows.forEach((element) => {
-    if (element.id === id) {
-      total++;
-    }
+    total = findElement(element, id, total);
   });
 }
 
 return total;}
+
+function findElement(element, id, total) {
+  if (element.id === id) {
+    total++;
+  }
+  return total;
+}
 
 function getBooksPossessedByAccount(account, books, authors) {let books_taken = [];
     books.forEach(book=>{
