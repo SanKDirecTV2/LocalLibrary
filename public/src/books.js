@@ -1,33 +1,38 @@
-function findAuthorById(authors, id) {return authors.find((author) => author.id === id);}
+function findAuthorById(authors, id) {
+  return authors.find((author) => author.id === id);
+}
 
-function findBookById(books, id) {return books.find((book) => book.id === id);}
+function findBookById(books, id) {
+  return books.find((book) => book.id === id);
+}
 
-function partitionBooksByBorrowedStatus(books) {let available = [];
-let unavailable = [];
-const bookStatuses = [];
-books.forEach((book) => {
-  const isBookReturned = book.borrows[0].returned;
+function partitionBooksByBorrowedStatus(books) {
+  const borrowed = books.filter((book) => book.borrows[0].returned === false);
 
-  if (isBookReturned) {
-    // if book is not returned
-    unavailable.push(book);
-  } else {
-    // if book is returned
-    available.push(book);
+  const returned = books.filter((book) => book.borrows[0].returned === true);
+
+  const result = [];
+  result.push(borrowed, returned);
+
+  return result;
+}
+
+function getBorrowersForBook(book, accounts) {
+  {
+    return book.borrows
+      .map((borrow) => {
+        let account = accounts.find((account) => account.id === borrow.id);
+        return { ...borrow, ...account };
+      })
+      .slice(0, 10);
   }
-});
-bookStatuses.push(available);
-bookStatuses.push(unavailable);
-return bookStatuses;}
-
-function getBorrowersForBook(book, accounts) { {
-  return book.borrows
-    .map((borrow) => {
-      let account = accounts.find((account) => account.id === borrow.id);
-      return { ...borrow, ...account };
-    })
-    .slice(0, 10);
-}}
+}
+module.exports = {
+  findAuthorById,
+  findBookById,
+  partitionBooksByBorrowedStatus,
+  getBorrowersForBook,
+};
 
 module.exports = {
   findAuthorById,
